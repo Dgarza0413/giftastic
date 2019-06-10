@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
+    <title>Giftastic</title>
+</head>
+
+<style>
+    body {
+        margin: 0;
+    }
+
+    img {
+        width: 300px;
+        height: 300px;
+    }
+
+    span {
+        /* display: none; */
+        position: absolute;
+        color: white;
+        bottom: 5%;
+        font-size: 30px;
+    }
+
+
+
+    form {
+        padding: 25px;
+    }
+
+    .navbar {
+        height: 70px;
+        align-items: center;
+        display: flex;
+        justify-content: space-around;
+        /* padding: 25px; */
+        background-color: grey;
+    }
+
+    .navbar-title {
+        /* float: left; */
+        font-size: 35px;
+    }
+
+    .navbar-form {
+        float: right;
+    }
+
+    .giphy-box {
+        display: flex;
+        justify-content: center;
+        width: 100vw;
+        flex-wrap: wrap;
+    }
+
+    .gif-image {
+        position: relative;
+    }
+
+    .gif-image:hover {
+        transition: .5s ease-in;
+        opacity: 0.7;
+    }
+</style>
+
+<body>
+    <header>
+        <div class="navbar">
+            <div class="navbar-title">Giftastic</div>
+            <div class="navbar-group">
+                <button class="trend">Trends</button>
+            </div>
+            <form class="navbar-form" action="">
+                <button class="submit">Submit button</button>
+                <label for="">Search</label>
+                <input class="search-gif" type="text">
+            </form>
+        </div>
+    </header>
+    <section>jumbotron</section>
+    <div class="giphy-button"></div>
+    <div class="giphy-box"></div>
+    <script>
+
+        // the example gif suggestions are placed at the top of the script tag
+        var gifArray = ["sad", "happy", "angry", "calm"]
+
+        //hover over effects to display info
+
+        function generateGif() {
+            //a variable to check the path of search or trending?
+            //it may not be needed but a searchValue contains 
+            //this number is to inflence on whether
+            var limitValue = 10
+            var searchValue = $(this).attr("data-name")
+            var APIkey = "VUJHlGFynk0yIcm8xpEqb22Pm5fjxMWO"
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchValue + "&api_key=" + APIkey + "&limit=" + limitValue
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    var gif = $("<div><img src=" + response.data[i].images.fixed_height.url + "></div>")
+                    var rating = $("<span>").text(response.data[i].rating)
+                    var gifBox = $("<div>").addClass("gif-box")
+
+                    gif.attr("src", response.data[i].images.url)
+                    gif.addClass("gif-image")
+
+                    // $(".gif-box").prepend(gif)
+                    // $(".giphy-box").prepend(gifBox)
+                    $(".giphy-box").prepend(gif)
+                    gif.prepend(rating)
+
+                }
+                console.log(response.data)
+            });
+        }
+
+
+        function generateButtons() {
+            $(".giphy-button").empty()
+            //this gifarray is need to push any search value turned into a button
+            //a function for loop to generate all buttons
+            for (var i = 0; i < gifArray.length; i++) {
+                var button = $("<button>");
+                // add attributes with gifArray indexes
+                button.addClass("gif-search")
+                button.attr("data-name", gifArray[i])
+                // add text
+                button.text(gifArray[i])
+                // add buttons to DOM
+                $(".giphy-button").append(button)
+            }
+        }
+
+
+        //lets use the search bar to input and push values into the gif Array
+        $(".submit").on("click", function (event) {
+            event.preventDefault();
+            var gifSearch = $(".search-gif").val().trim();
+            console.log(gifSearch)
+            gifArray.push(gifSearch)
+            generateButtons()
+        })
+
+        $(document).on("click", ".gif-search", generateGif);
+        generateButtons()
+
+
+        //should i include the stickers feature? would i to have to include
+        //into the animated portions or seperate into a different box
+    </script>
+</body>
+
+</html>
