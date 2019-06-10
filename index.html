@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700&display=swap" rel="stylesheet">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/05f187210c.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
     <title>Giftastic</title>
@@ -12,6 +16,7 @@
 
 <style>
     body {
+        font-family: 'Ubuntu', sans-serif;
         margin: 0;
     }
 
@@ -21,35 +26,81 @@
     }
 
     span {
-        /* display: none; */
+        display: none;
         position: absolute;
-        color: white;
-        bottom: 5%;
+        /* color: white; */
+        bottom: 0%;
+        left: 0%;
         font-size: 30px;
     }
 
-
-
-    form {
-        padding: 25px;
+    input {
+        padding: 10px 20px;
+        font-size: 20px;
+        border-radius: 25px;
     }
+
+    .submit {
+        position: absolute;
+        padding: 15px;
+        background-color: grey;
+        color: white;
+        right: 0;
+        bottom: 0;
+        border-radius: 20px;
+    }
+
+    /* review color changes */
+    .submit:hover {
+        transition: .1s ease-in;
+        background-color: black;
+
+    }
+
+    /* try i columns and column gaps */
 
     .navbar {
         height: 70px;
         align-items: center;
         display: flex;
         justify-content: space-around;
-        /* padding: 25px; */
-        background-color: grey;
+        background-color: #1C1C1C;
+        background:
+            linear-gradient(to right, #ff2828 1%, #ffeb54 17%, #0cff00 37%, #42d2e5 52%, #0019ff 68%, #d400ff 81%) right bottom #1c1c1c no-repeat;
+        background-size: 100% 5px;
     }
 
     .navbar-title {
-        /* float: left; */
+        padding: 10px;
+        color: white;
+        font-weight: 700;
         font-size: 35px;
     }
 
     .navbar-form {
+        position: relative;
         float: right;
+    }
+
+    .giphy-button {
+        text-align: center;
+    }
+
+    /* review color changes */
+    .gif-search:hover {
+        transition: .1s ease-in;
+        background-color: black;
+    }
+
+    .gif-search {
+        margin: 10px;
+        padding: 10px;
+        border: none;
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+        border-radius: 30px;
+        background-color: red;
     }
 
     .giphy-box {
@@ -63,28 +114,35 @@
         position: relative;
     }
 
-    .gif-image:hover {
-        transition: .5s ease-in;
-        opacity: 0.7;
+    .gif-image:hover span {
+        transition: .2s ease-in;
+        /* transition-duration: 2s; */
+        display: block;
+        color: white;
+        bottom: 10%;
+        left: 10%;
+        font-size: 30px;
     }
 </style>
 
 <body>
     <header>
         <div class="navbar">
-            <div class="navbar-title">Giftastic</div>
+            <div class="navbar-title"><i class="fas fa-portrait" style="padding: 10px;"></i>Giftastic</div>
             <div class="navbar-group">
-                <button class="trend">Trends</button>
+                <!-- <button class="trend">Trends</button> -->
             </div>
             <form class="navbar-form" action="">
-                <button class="submit">Submit button</button>
-                <label for="">Search</label>
-                <input class="search-gif" type="text">
+                <!-- <button class="submit">Submit button</button> -->
+                <input class="search-gif" placeholder="  search..." type="text">
+                <i class="fas fa-search submit" style="color: white;"></i>
             </form>
         </div>
     </header>
-    <section>jumbotron</section>
-    <div class="giphy-button"></div>
+    <div class="jumbotron">
+        <div class="giphy-button"></div>
+    </div>
+
     <div class="giphy-box"></div>
     <script>
 
@@ -106,13 +164,17 @@
                 url: queryURL,
                 method: "GET"
             }).then(function (response) {
+                // response.preventDefault();
                 for (var i = 0; i < response.data.length; i++) {
                     var gif = $("<div><img src=" + response.data[i].images.fixed_height.url + "></div>")
-                    var rating = $("<span>").text(response.data[i].rating)
+                    var rating = $("<span>").text("Rating:" + response.data[i].rating)
                     var gifBox = $("<div>").addClass("gif-box")
 
+                    rating.addClass("rating")
+
                     gif.attr("src", response.data[i].images.url)
-                    gif.addClass("gif-image")
+                    gif.addClass("gif-image", "data-aos='flip-right'", "data-aos-delay='300'")
+                    gif.addClass("data-aos='flip-right'")
 
                     // $(".gif-box").prepend(gif)
                     // $(".giphy-box").prepend(gifBox)
@@ -144,7 +206,7 @@
 
         //lets use the search bar to input and push values into the gif Array
         $(".submit").on("click", function (event) {
-            event.preventDefault();
+            event.preventDefault(gifSearch);
             var gifSearch = $(".search-gif").val().trim();
             console.log(gifSearch)
             gifArray.push(gifSearch)
@@ -157,6 +219,10 @@
 
         //should i include the stickers feature? would i to have to include
         //into the animated portions or seperate into a different box
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
     </script>
 </body>
 
