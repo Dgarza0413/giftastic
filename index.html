@@ -6,224 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700&display=swap" rel="stylesheet">
-
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://kit.fontawesome.com/05f187210c.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
     <title>Giftastic</title>
 </head>
-
-<style>
-    body {
-        font-family: 'Ubuntu', sans-serif;
-        margin: 0;
-    }
-
-    img {
-        width: 300px;
-        height: 300px;
-    }
-
-    span {
-        display: none;
-        position: absolute;
-        /* color: white; */
-        bottom: 0%;
-        left: 0%;
-        font-size: 30px;
-    }
-
-    input {
-        padding: 10px 20px;
-        font-size: 20px;
-        border-radius: 25px;
-    }
-
-    .submit {
-        position: absolute;
-        padding: 15px;
-        background-color: grey;
-        color: white;
-        right: 0;
-        bottom: 0;
-        border-radius: 20px;
-    }
-
-    /* review color changes */
-    .submit:hover {
-        transition: .1s ease-in;
-        background-color: black;
-
-    }
-
-    /* try i columns and column gaps */
-
-    .navbar {
-        height: 70px;
-        align-items: center;
-        display: flex;
-        justify-content: space-around;
-        background-color: #1C1C1C;
-        background:
-            linear-gradient(to right, #ff2828 1%, #ffeb54 17%, #0cff00 37%, #42d2e5 52%, #0019ff 68%, #d400ff 81%) right bottom #1c1c1c no-repeat;
-        background-size: 100% 5px;
-    }
-
-    .navbar-title {
-        padding: 10px;
-        color: white;
-        font-weight: 700;
-        font-size: 35px;
-    }
-
-    .navbar-form {
-        position: relative;
-        float: right;
-    }
-
-    .giphy-button {
-        text-align: center;
-    }
-
-    /* review color changes */
-    .gif-search:hover {
-        transition: .1s ease-in;
-        background-color: black;
-    }
-
-    .gif-search {
-        margin: 10px;
-        padding: 10px;
-        border: none;
-        font-size: 20px;
-        font-weight: 600;
-        color: white;
-        border-radius: 30px;
-        background-color: red;
-    }
-
-    .giphy-box {
-        display: flex;
-        justify-content: center;
-        width: 100vw;
-        flex-wrap: wrap;
-    }
-
-    .gif-image {
-        position: relative;
-    }
-
-    .gif-image:hover span {
-        transition: .2s ease-in;
-        /* transition-duration: 2s; */
-        display: block;
-        color: white;
-        bottom: 10%;
-        left: 10%;
-        font-size: 30px;
-    }
-</style>
 
 <body>
     <header>
         <div class="navbar">
             <div class="navbar-title"><i class="fas fa-portrait" style="padding: 10px;"></i>Giftastic</div>
-            <div class="navbar-group">
-                <!-- <button class="trend">Trends</button> -->
-            </div>
+            <div class="navbar-group"></div>
             <form class="navbar-form" action="">
-                <!-- <button class="submit">Submit button</button> -->
                 <input class="search-gif" placeholder="  search..." type="text">
-                <i class="fas fa-search submit" style="color: white;"></i>
+                <input id="submit" class="fas fa-search" type="submit" value="Submit">
             </form>
         </div>
     </header>
     <div class="jumbotron">
         <div class="giphy-button"></div>
     </div>
-
     <div class="giphy-box"></div>
-    <script>
-
-        // the example gif suggestions are placed at the top of the script tag
-        var gifArray = ["sad", "happy", "angry", "calm"]
-
-        //hover over effects to display info
-
-        function generateGif() {
-            //a variable to check the path of search or trending?
-            //it may not be needed but a searchValue contains 
-            //this number is to inflence on whether
-            var limitValue = 10
-            var searchValue = $(this).attr("data-name")
-            var APIkey = "VUJHlGFynk0yIcm8xpEqb22Pm5fjxMWO"
-            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchValue + "&api_key=" + APIkey + "&limit=" + limitValue
-
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (response) {
-                // response.preventDefault();
-                for (var i = 0; i < response.data.length; i++) {
-                    var gif = $("<div><img src=" + response.data[i].images.fixed_height.url + "></div>")
-                    var rating = $("<span>").text("Rating:" + response.data[i].rating)
-                    var gifBox = $("<div>").addClass("gif-box")
-
-                    rating.addClass("rating")
-
-                    gif.attr("src", response.data[i].images.url)
-                    gif.addClass("gif-image", "data-aos='flip-right'", "data-aos-delay='300'")
-                    gif.addClass("data-aos='flip-right'")
-
-                    // $(".gif-box").prepend(gif)
-                    // $(".giphy-box").prepend(gifBox)
-                    $(".giphy-box").prepend(gif)
-                    gif.prepend(rating)
-
-                }
-                console.log(response.data)
-            });
-        }
-
-
-        function generateButtons() {
-            $(".giphy-button").empty()
-            //this gifarray is need to push any search value turned into a button
-            //a function for loop to generate all buttons
-            for (var i = 0; i < gifArray.length; i++) {
-                var button = $("<button>");
-                // add attributes with gifArray indexes
-                button.addClass("gif-search")
-                button.attr("data-name", gifArray[i])
-                // add text
-                button.text(gifArray[i])
-                // add buttons to DOM
-                $(".giphy-button").append(button)
-            }
-        }
-
-
-        //lets use the search bar to input and push values into the gif Array
-        $(".submit").on("click", function (event) {
-            event.preventDefault(gifSearch);
-            var gifSearch = $(".search-gif").val().trim();
-            console.log(gifSearch)
-            gifArray.push(gifSearch)
-            generateButtons()
-        })
-
-        $(document).on("click", ".gif-search", generateGif);
-        generateButtons()
-
-
-        //should i include the stickers feature? would i to have to include
-        //into the animated portions or seperate into a different box
-    </script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
+    <script src="assets/javascript/app.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,145 @@
+body {
+    font-family: 'Ubuntu', sans-serif;
+    margin: 0;
+}
+
+img {
+    margin: 2% 0%;
+    width: 300px;
+}
+
+p {
+    display: none;
+    color: white;
+    opacity: 0;
+    bottom: 0%;
+    left: 0%;
+    font-size: 16px;
+}
+
+.gif-images:hover p {
+    opacity: 1;
+    display: block;
+    color: white;
+    bottom: 10%;
+    left: 10%;
+    font-size: 16px;
+}
+
+input {
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 25px;
+}
+
+#submit {
+    background:
+        linear-gradient(to right, #0019ff 0%, #d400ff 100%) right bottom #1c1c1c no-repeat;
+    background-color: grey;
+    color: white;
+    border-radius: 20px;
+}
+
+#submit:hover {
+    transition: .1s ease-in;
+    background-color: black;
+}
+
+.navbar {
+    height: 70px;
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    background-color: #1C1C1C;
+    background:
+        linear-gradient(to right, #ff2828 1%, #ffeb54 17%, #0cff00 37%, #42d2e5 52%, #0019ff 68%, #d400ff 81%) right bottom #1c1c1c no-repeat;
+    background-size: 100% 5px;
+}
+
+.navbar-title {
+    padding: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 35px;
+}
+
+.navbar-form {
+    position: relative;
+    float: right;
+}
+
+.giphy-button {
+    text-align: center;
+}
+
+/* review color changes */
+.gif-search:hover {
+    transition: .1s ease-in;
+    background-color: black;
+}
+
+.gif-search {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    border-radius: 30px;
+    background-color: red;
+}
+
+.giphy-box {
+    margin: 0% 15%;
+    columns: 3 300px;
+}
+
+.gif-images {
+    position: relative;
+}
+
+.meta-box {
+    position: absolute;
+    bottom: 0;
+}
+
+
+@media screen and (max-width: 1332px) {
+    .giphy-box {
+        columns: 2 400px
+    }
+
+    img {
+        width: 400px;
+    }
+}
+
+@media screen and (max-width: 1165px) {
+    .giphy-box {
+        columns: 2
+    }
+
+    img {
+        width: 300px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .giphy-box {
+        text-align: center;
+        margin: 0% 5%
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .navbar {
+        height: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: initial;
+    }
+
+    .giphy-box {
+        columns: 1
+    }
+}
